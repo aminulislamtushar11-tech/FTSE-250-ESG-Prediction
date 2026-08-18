@@ -3,49 +3,52 @@
 **Author:** Md Aminul Islam Tushar
 **Module:** BUSI 1783, University of Greenwich
 
-## Research objective
+## What this project is about
 
-To identify the key financial determinants of ESG performance among UK-listed (FTSE 250) firms, and evaluate whether machine learning models improve predictive accuracy over traditional regression in modelling that relationship.
+My dissertation looks at whether a company's financial numbers (like profit, debt, and cash position) can be used to predict its ESG score. I focus on companies in the FTSE 250 index between 2019 and 2023, and compare a machine learning model against a normal regression model to see which one predicts better.
 
-## Data sources
+## Where the data comes from
 
-- **ORBIS (Bureau van Dijk / Moody's)** — company financial statement data (total assets, current assets, inventory, current liabilities, shareholders' funds, long-term debt, short-term loans, net income, NACE sector code, date of incorporation). Accessed via University of Greenwich institutional licence.
-- **LSEG Workspace (Refinitiv)** — ESG Score and Environmental / Social / Governance pillar scores (`TR.TRESGScore`, not the media-controversy-adjusted Combined Score). Accessed via University of Greenwich institutional licence.
-- **FTSE 250 index membership** — point-in-time constituent lists reconstructed for each year-end 2019–2023 from LSEG's Index Leavers & Joiners changelog, applied backward from the current constituent list. This avoids survivorship bias: firms that left the index during the sample period are included for the years in which they were actually constituents, rather than being silently dropped.
+- **ORBIS (Bureau van Dijk / Moody's)** — I used this to get company financial data: total assets, current assets, inventory, current liabilities, shareholders' funds, long-term debt, short-term loans, net income, sector code (NACE), and date the company was set up. I got access through the University of Greenwich.
+- **LSEG Workspace (Refinitiv)** — I used this to get each company's ESG score and its three separate pillar scores (Environmental, Social, Governance). I used the plain ESG Score, not the "Combined" score, because the Combined one gets adjusted for news stories/controversies, which isn't what I'm trying to measure. Also accessed through the University of Greenwich.
+- **FTSE 250 company list** — I couldn't just use today's list of 250 companies, because that would leave out companies that were in the index at some point but have since left (which would bias the results). So I built a list of which companies were actually in the FTSE 250 at the end of each year from 2019 to 2023, using LSEG's record of companies joining and leaving the index over time.
 
-## Sample definition
+## How I built the final sample
 
-- **Population:** FTSE 250 constituents, point-in-time membership, 2019–2023.
-- **Exclusions:** financial-sector firms (NACE Rev. 2 divisions 64, 65, 66 — banks, insurers, financial services), firms with fewer than 3 years of usable data, firm-years missing more than 2 of the 6 core financial ratios.
-- **Merge key:** ISIN + fiscal year (inner join across all three sources).
-- **Final sample:** 94 firms, 431 firm-year observations, 2019–2023.
-- **ISIN merge match rate (ORBIS ↔ ESG):** 96.4%.
+- I started with FTSE 250 companies, year by year, 2019–2023.
+- I removed banks, insurers, and other financial companies, because their balance sheets work differently and the ratios don't mean the same thing for them (this is a common thing to do in this kind of study).
+- I also removed 9 investment trusts, funds, and REITs that were hiding under a miscellaneous industry code rather than the normal financial-sector codes. I found them by checking which companies had near-zero debt and unusually extreme liquidity ratios, then looked up their names to confirm (things like Fidelity European Trust, Murray Income Trust, and a couple of REITs). These get excluded for the same reason as banks — their balance sheets are shaped by fund/REIT regulation, not normal business operations.
+- I removed companies that didn't have enough years of data (less than 3 years), and any company-year missing too many of the ratios (more than 2 out of 6).
+- I matched everything up using each company's ISIN code plus the year, since company names can be spelled differently across databases.
+- I also grouped my industry codes into 12 broader categories (like Manufacturing, Retail, Real Estate) instead of leaving 38 narrow codes, since some of the narrow ones only had 2-3 companies in them — too small to use properly as a control variable.
+- **What I ended up with: 85 companies, 389 company-year rows of data, covering 2019–2023.**
+- **Match rate between the financial data and ESG data: 95.8%.**
 
-### Known limitations (disclosed, not concealed)
+## Things I want to be upfront about (limitations)
 
-- The point-in-time FTSE 250 universe could not be matched to an ISIN for all historical (since-delisted) constituents — roughly 34% of firm-years in the full reconstructed universe lack an ISIN and are therefore excluded from this pipeline. This is a data-availability constraint of the extraction tools used, not a methodological choice.
-- The LSEG ESG export can only report history for companies that are FTSE 250 constituents *today*; it cannot retrieve ESG scores for companies that have since left the index, even where their financials are available in ORBIS. This is disclosed here and in Chapter 3.6 as a source of residual survivorship-style attrition specific to the ESG variable, separate from the point-in-time universe construction (which itself is unaffected by this limitation).
+- When I built the company list, I couldn't find an ISIN code for every single company that used to be in the FTSE 250 but isn't anymore — some of the codes just weren't findable through the tools I had access to. About a third of those older company-year entries had to be left out because of this.
+- The ESG data tool only lets me pull history for companies that are STILL in the FTSE 250 today — it can't show me ESG scores for a company that has already left the index, even if I have its financial data from ORBIS. So some companies with good financial data still don't have an ESG score, just because they're no longer in the index. I explain this in more detail in Chapter 3.6.
 
-## Files in this repository
+## What's in this repository
 
-| File | Description |
+| File | What it is |
 |---|---|
-| `merge_and_clean.py` | Loads the three raw data sources, restricts ORBIS to the point-in-time FTSE 250 universe, excludes financial-sector firms, computes six financial ratios (ROA, ROE, Debt-to-Equity, Debt-to-Assets, Current Ratio, Quick Ratio) plus firm-size and firm-age controls, merges with ESG scores on ISIN + Year, applies the missing-data and minimum-history rules, winsorises at the 1st/99th percentiles, and outputs the final analytical dataset. |
-| `descriptive_statistics.csv` | Summary statistics (count, mean, std, min/max, quartiles) for all ratios and the ESG score across the final 431 firm-year sample. |
-| `sample_schema.csv` | A small, anonymised sample (5 rows, ISINs replaced with placeholder codes) showing the exact column structure of the final analytical dataset, provided in place of the full dataset — see licensing note below. |
+| `merge_and_clean.py` | The Python script I wrote to combine the three data sources, remove financial companies, calculate the 6 ratios (ROA, ROE, Debt-to-Equity, Debt-to-Assets, Current Ratio, Quick Ratio), match everything to ESG scores, clean out incomplete rows, and produce the final dataset. |
+| `descriptive_statistics.csv` | A summary table (averages, min/max, etc.) of the ratios and ESG scores across my final 389 rows of data. |
+| `sample_schema.csv` | A small example (5 rows) showing what my final dataset looks like — company names/codes replaced with fake ones. See the note below on why I couldn't upload the real dataset. |
 
-**Licensing note:** the full merged dataset is not published in this repository, because it is derived from data obtained under University of Greenwich's institutional licences with ORBIS (Moody's/Bureau van Dijk) and LSEG (Refinitiv), which do not permit redistribution of the underlying data. `sample_schema.csv` documents the exact structure and column definitions of the dataset that `merge_and_clean.py` produces, so the pipeline is fully reproducible by anyone with their own institutional access to these two databases.
+**Why the real dataset isn't here:** I'm not allowed to publish the actual ORBIS and Refinitiv data outside of the University's systems, because of the licence terms I access them under. So instead I've included the script that builds the dataset, plus a small fake example showing exactly what the real output looks like, so anyone with their own access to ORBIS and Refinitiv could run the same script and reproduce my results.
 
-## How to reproduce
+## How to run this yourself
 
 ```bash
 pip install pandas numpy openpyxl python-calamine
 python merge_and_clean.py
 ```
 
-Place your own raw exports at:
-- `data/interim/ftse250_universe.xlsx` — point-in-time FTSE 250 constituent list (ISIN | CompanyName | RIC | Year)
-- `data/raw/refinitiv_esg_YYYY-MM-DD.xlsx` — LSEG ESG export
-- `data/raw/orbis_financials_YYYY-MM-DD.xlsx` — ORBIS financial export
+You'd need your own exports saved in these locations first:
+- `data/interim/ftse250_universe.xlsx` — the FTSE 250 company list by year (ISIN | CompanyName | RIC | Year)
+- `data/raw/refinitiv_esg_YYYY-MM-DD.xlsx` — the LSEG ESG export
+- `data/raw/orbis_financials_YYYY-MM-DD.xlsx` — the ORBIS financial export
 
-and update the three filenames at the top of `merge_and_clean.py` to match.
+and change the three filenames at the top of `merge_and_clean.py` to match whatever you named your files.
