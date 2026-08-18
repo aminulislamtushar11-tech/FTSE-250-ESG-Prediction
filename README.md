@@ -32,7 +32,7 @@ To identify the key financial determinants of ESG performance among UK-listed (F
 |---|---|
 | `merge_and_clean.py` | Loads the three raw data sources, restricts ORBIS to the point-in-time FTSE 250 universe, excludes financial-sector firms, computes six financial ratios (ROA, ROE, Debt-to-Equity, Debt-to-Assets, Current Ratio, Quick Ratio) plus firm-size and firm-age controls, merges with ESG scores on ISIN + Year, applies the missing-data and minimum-history rules, winsorises at the 1st/99th percentiles, and outputs the final analytical dataset. |
 | `descriptive_statistics.csv` | Summary statistics (count, mean, std, min/max, quartiles) for all ratios and the ESG score across the final 431 firm-year sample. |
-| `data/final/sample_schema.csv` | A small, anonymised sample (5 rows, ISINs replaced with placeholder codes) showing the exact column structure of the final analytical dataset, provided in place of the full dataset — see licensing note below. |
+| `sample_schema.csv` | A small, anonymised sample (5 rows, ISINs replaced with placeholder codes) showing the exact column structure of the final analytical dataset, provided in place of the full dataset — see licensing note below. |
 
 **Licensing note:** the full merged dataset is not published in this repository, because it is derived from data obtained under University of Greenwich's institutional licences with ORBIS (Moody's/Bureau van Dijk) and LSEG (Refinitiv), which do not permit redistribution of the underlying data. `sample_schema.csv` documents the exact structure and column definitions of the dataset that `merge_and_clean.py` produces, so the pipeline is fully reproducible by anyone with their own institutional access to these two databases.
 
