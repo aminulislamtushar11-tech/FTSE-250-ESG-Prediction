@@ -2,7 +2,9 @@
 ## A Machine Learning Analysis of UK Listed Companies
 
 MSc Business Analytics dissertation
+
 University of Greenwich (BUSI 1783)
+
 Author: Md Aminul Islam Tushar
 
 ---
