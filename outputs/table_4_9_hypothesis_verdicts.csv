@@ -1,0 +1,5 @@
+Hypothesis,Statement,Evidence,Verdict
+H1,Profitability positively associated with ESG,ROA β=+4.34***; ROE β=-1.05,Supported
+H2,Leverage negatively associated with ESG,DebtToEquity β=-2.72***; DebtToAssets β=+0.76,Supported
+H3,Liquidity positively associated with ESG,CurrentRatio β=-4.77***; QuickRatio β=+3.18**,Mixed
+H4,Ensemble models outperform MLR,Multiple Linear Regression R²=0.239; Random Forest R²=-0.068; XGBoost R²=0.034,Not supported

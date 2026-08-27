@@ -1,0 +1,9 @@
+Variable,Coefficient,Std. Error,t,p-value,Sig.
+Return on assets,4.3368,1.1517,3.7655,0.0002,***
+Return on equity,-1.048,1.0974,-0.955,0.3404,
+Debt-to-equity,-2.7177,0.884,-3.0745,0.0023,***
+Debt-to-assets,0.7642,1.048,0.7292,0.4665,
+Current ratio,-4.768,1.2646,-3.7705,0.0002,***
+Quick ratio,3.1775,1.2929,2.4577,0.0146,**
+Log total assets,6.6288,1.0044,6.5995,0.0,***
+Firm age,1.9149,0.7454,2.5689,0.0107,**

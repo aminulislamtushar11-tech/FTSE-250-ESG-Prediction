@@ -1,0 +1,22 @@
+Feature,Mean |SHAP|
+Log total assets,3.705
+Firm age,1.824
+Debt-to-equity,1.517
+Debt-to-assets,1.021
+Sector: Retail,0.733
+Quick ratio,0.714
+Return on assets,0.36
+Current ratio,0.349
+Sector: ICT,0.148
+Return on equity,0.113
+Sector: Real estate,0.105
+Year 2023,0.056
+Sector: Transport,0.047
+Year 2022,0.033
+Sector: Other,0.033
+Year 2021,0.022
+Sector: Administrative,0.02
+Sector: Construction,0.02
+Sector: Professional,0.016
+Sector: Hospitality,0.012
+Year 2020,0.009

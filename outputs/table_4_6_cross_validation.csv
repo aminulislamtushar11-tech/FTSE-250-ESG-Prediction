@@ -1,0 +1,4 @@
+Model,CV R² (mean),CV R² (SD),CV MAE (mean)
+Multiple Linear Regression,-0.2584,0.8011,11.2723
+Random Forest,-0.0122,0.2311,11.0249
+XGBoost,-0.1608,0.5575,11.3005
