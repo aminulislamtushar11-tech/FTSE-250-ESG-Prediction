@@ -14,8 +14,8 @@ learning methods improve predictive accuracy over traditional regression.
 
 **Research questions**
 
-- **RQ1** — To what extent can financial ratios predict ESG scores among UK listed companies?
-- **RQ2** — Do machine learning models provide better predictive performance than traditional
+- **RQ1**: To what extent can financial ratios predict ESG scores among UK listed companies?
+- **RQ2**: Do machine learning models provide better predictive performance than traditional
   regression in explaining ESG scores?
 
 **Sample** — 389 firm-year observations covering 85 non-financial FTSE 250 constituents,
